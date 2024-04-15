@@ -1,7 +1,11 @@
 const express = require('express');
 const mongoose = require("mongoose");
-const app = express();
 const port = process.env.PUBLIC_PORT || 3000;
+const bodyParser = require('body-parser');
+const routes = require('./routes');
+const app = express();
+
+app.use(bodyParser.json());
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -14,9 +18,9 @@ async function Connection() {
   console.log("connected to DB");
 }
 
-app.get('/ping', (req,res)=> {
-  res.json({message:"pong"});
-})
+app.use('/', routes);
+
+
 
 Connection().then(() => {
   app.listen(port, () => {
